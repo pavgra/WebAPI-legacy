@@ -24,7 +24,6 @@ import org.ohdsi.webapi.cohortdefinition.CohortExpression;
 import org.ohdsi.webapi.cohortdefinition.CohortExpressionQueryBuilder;
 import org.ohdsi.webapi.cohortdefinition.CriteriaGroup;
 import org.ohdsi.webapi.helper.ResourceHelper;
-import org.ohdsi.webapi.service.FeasibilityService;
 import org.ohdsi.webapi.vocabulary.ConceptSetExpressionQueryBuilder;
 
 /**
