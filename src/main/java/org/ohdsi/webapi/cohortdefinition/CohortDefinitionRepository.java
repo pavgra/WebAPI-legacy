@@ -36,5 +36,8 @@ public interface CohortDefinitionRepository extends CrudRepository<CohortDefinit
   
   @Query("select cd from CohortDefinition AS cd JOIN FETCH cd.details as d")          
   List<CohortDefinition> list();
-  
+
+  @EntityGraph(value = "CohortDefinition.withDetail", type = EntityGraph.EntityGraphType.LOAD)
+  @Query("select cd from CohortDefinition cd where guid = ?1")
+  CohortDefinition findByGuidWithDetails(String guid);
 }

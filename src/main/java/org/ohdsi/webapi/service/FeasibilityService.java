@@ -29,10 +29,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -406,8 +404,8 @@ public class FeasibilityService extends AbstractDaoService {
 
     // create index cohort
     CohortDefinition indexRule = new CohortDefinition()
-            .setName("Index Population for Study: " + newStudy.getName())
-            .setDescription(study.indexDescription)
+            .withName("Index Population for Study: " + newStudy.getName())
+            .withDescription(study.indexDescription)
             .setCreatedBy(security.getSubject())
             .setCreatedDate(currentTime)
             .setExpressionType(ExpressionType.SIMPLE_EXPRESSION);
@@ -421,8 +419,8 @@ public class FeasibilityService extends AbstractDaoService {
     // build matching cohort from inclusion rules if inclusion rules exist
     if (newStudy.getInclusionRules().size() > 0) {
       CohortDefinition resultDef = new CohortDefinition()
-              .setName("Matching Population for Study: " + newStudy.getName())
-              .setDescription(newStudy.getDescription())
+              .withName("Matching Population for Study: " + newStudy.getName())
+              .withDescription(newStudy.getDescription())
               .setCreatedBy(security.getSubject())
               .setCreatedDate(currentTime)
               .setExpressionType(ExpressionType.SIMPLE_EXPRESSION);
@@ -466,15 +464,15 @@ public class FeasibilityService extends AbstractDaoService {
     updatedStudy.getIndexRule()
             .setModifiedBy(security.getSubject())
             .setModifiedDate(currentTime)
-            .setName("Index Population for Study: " + updatedStudy.getName())
-            .setDescription(study.indexDescription)
+            .withName("Index Population for Study: " + updatedStudy.getName())
+            .withDescription(study.indexDescription)
             .getDetails().setExpression(study.indexRule);
 
     CohortDefinition resultRule = updatedStudy.getResultRule();
     if (updatedStudy.getInclusionRules().size() > 0) {
       if (resultRule == null) {
         resultRule = new CohortDefinition();
-        resultRule.setName("Matching Population for Study: " + updatedStudy.getName())
+        resultRule.withName("Matching Population for Study: " + updatedStudy.getName())
                 .setCreatedBy(security.getSubject())
                 .setCreatedDate(currentTime)
                 .setExpressionType(ExpressionType.SIMPLE_EXPRESSION);
@@ -487,8 +485,8 @@ public class FeasibilityService extends AbstractDaoService {
 
       resultRule.setModifiedBy(security.getSubject())
               .setModifiedDate(currentTime)
-              .setName("Matching Population for Study: " + updatedStudy.getName())
-              .setDescription(updatedStudy.getDescription())
+              .withName("Matching Population for Study: " + updatedStudy.getName())
+              .withDescription(updatedStudy.getDescription())
               .setModifiedBy(security.getSubject())
               .setModifiedDate(currentTime)
               .getDetails().setExpression(getMatchingCriteriaExpression(updatedStudy));

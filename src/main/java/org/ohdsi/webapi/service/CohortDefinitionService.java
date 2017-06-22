@@ -20,8 +20,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
+import java.util.UUID;
 import javax.servlet.ServletContext;
 import javax.transaction.Transactional;
 import javax.ws.rs.Consumes;
@@ -50,6 +52,8 @@ import org.ohdsi.webapi.cohortdefinition.ExpressionType;
 import org.ohdsi.webapi.cohortdefinition.GenerateCohortTasklet;
 import org.ohdsi.webapi.GenerationStatus;
 import org.ohdsi.webapi.cohortdefinition.InclusionRuleReport;
+import org.ohdsi.webapi.common.ModelType;
+import org.ohdsi.webapi.common.User;
 import org.ohdsi.webapi.conceptset.ConceptSetExport;
 import org.ohdsi.webapi.conceptset.ExportUtil;
 import org.ohdsi.webapi.job.JobExecutionResource;
@@ -358,11 +362,19 @@ public class CohortDefinitionService extends AbstractDaoService {
     //create definition in 2 saves, first to get the generated ID for the new def
     // then to associate the details with the definition
     CohortDefinition newDef = new CohortDefinition();
-    newDef.setName(def.name)
-            .setDescription(def.description)
+    newDef.withName(def.name)
+            .withDescription(def.description)
             .setCreatedBy(security.getSubject())
             .setCreatedDate(currentTime)
             .setExpressionType(def.expressionType);
+    newDef.setGuid(UUID.randomUUID().toString());
+    newDef.setOrganization("OHDSI");
+    newDef.setModelVersion("5.1");
+    newDef.setModelType(ModelType.CDM);
+    if (!Objects.isNull(security.getSubject())) {
+      User author = new User(security.getSubject(), null);
+      newDef.setAuthor(author);
+    }
 
     newDef = this.cohortDefinitionRepository.save(newDef);
 
@@ -407,8 +419,8 @@ public class CohortDefinitionService extends AbstractDaoService {
 
     CohortDefinition currentDefinition = this.cohortDefinitionRepository.findOneWithDetail(id);
 
-    currentDefinition.setName(def.name)
-            .setDescription(def.description)
+    currentDefinition.withName(def.name)
+            .withDescription(def.description)
             .setExpressionType(def.expressionType)
             .setModifiedBy(security.getSubject())
             .setModifiedDate(currentTime)
