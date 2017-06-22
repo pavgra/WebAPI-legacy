@@ -32,13 +32,7 @@ public class ExchangeService extends AbstractDaoService {
     @Produces(MediaType.APPLICATION_JSON)
     public List<CommonCohortDefinitionDTO> cohortDefinitionList(){
         List<CohortDefinition> cohortDefinitions = cohortDefinitionRepository.list();
-        List<CommonCohortDefinitionDTO> result = new LinkedList<>();
-        for(CohortDefinition cd : cohortDefinitions){
-            CommonCohortDefinitionDTO dto = new CommonCohortDefinitionDTO(cd);
-            result.add(dto);
-        }
-        return result;
-//        return cohortDefinitions.stream().map(CommonCohortDefinitionDTO::new).collect(Collectors.toList());
+        return cohortDefinitions.stream().map(CommonCohortDefinitionDTO::new).collect(Collectors.toList());
     }
 
     @Path("cohortdefinition/{guid}")
